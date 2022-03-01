@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-  primary = Blue600Dark,
+  primary = Blue700Dark,
   onPrimary = Color.White,
   secondary = BlueGrey200Dark,
   background = Color.White,
@@ -16,7 +16,7 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-  primary = Blue600,
+  primary = Blue700,
   onPrimary = Color.White,
   secondary = BlueGrey200,
   background = Color.White,
@@ -44,7 +44,6 @@ fun WhipMobilityTestTheme(
 
   MaterialTheme(
     colors = colors,
-    typography = Typography,
     shapes = Shapes,
     content = content
   )

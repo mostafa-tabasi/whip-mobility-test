@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">Whip Mobility Test</string>
+
+  <string name="dashboard">Dashboard</string>
+  <string name="all">All</string>
+  <string name="today">Today</string>
+  <string name="last_week">Last Week</string>
+  <string name="last_month">Last Month</string>
 </resources>

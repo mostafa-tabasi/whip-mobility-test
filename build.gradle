@@ -18,6 +18,7 @@ allprojects {
         kotlinOptions {
             freeCompilerArgs += [
                     "-Xuse-experimental=androidx.compose.material.ExperimentalMaterialApi",
+                    "-Xuse-experimental=androidx.compose.animation.ExperimentalAnimationApi",
             ]
         }
     }
