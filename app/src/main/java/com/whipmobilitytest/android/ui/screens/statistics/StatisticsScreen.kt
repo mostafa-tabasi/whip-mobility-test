@@ -46,15 +46,27 @@ fun StatisticsScreen() {
       exit = fadeOut()
     ) { Loading() }
 
+    // Error message
+    AnimatedVisibility(
+      visible = viewModel.uiState.errorMessage.isNotEmpty(),
+      enter = fadeIn(),
+      exit = fadeOut()
+    ) {
+      ErrorMessage(
+        message = viewModel.uiState.errorMessage,
+        onTryAgainClick = viewModel::onTryAgainClick
+      )
+    }
+
     // Screen content
     AnimatedVisibility(
-      visible = viewModel.uiState.dataString.isNotEmpty(),
+      visible = viewModel.uiState.dashboardStatisticsData != null,
       enter = fadeIn(),
       exit = fadeOut()
     ) {
       Content(
         modifier = Modifier.weight(1f),
-        dataString = viewModel.uiState.dataString
+        dataString = viewModel.uiState.dashboardStatisticsData?.analytics?.job?.toString() ?: ""
       )
     }
   }
@@ -137,6 +149,50 @@ fun Loading() {
     contentAlignment = Alignment.Center,
     modifier = Modifier.fillMaxSize()
   ) { CircularProgressIndicator() }
+}
+
+@Composable
+fun ErrorMessage(message: String, onTryAgainClick: () -> Unit) {
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(dimensionResource(id = DP.dimen._16sdp))
+  ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+      // error description
+      Text(
+        text = message,
+        textAlign = TextAlign.Center,
+        fontSize = dimensionResource(id = SP.dimen._17ssp).value.sp,
+        color = MaterialTheme.colors.onSurface
+      )
+      VerticalSpacer(space = DP.dimen._16sdp)
+      // try again button
+      Text(
+        text = stringResource(id = R.string.try_again),
+        modifier = Modifier
+          .border(
+            border = BorderStroke(
+              width = dimensionResource(id = DP.dimen._1sdp),
+              color = MaterialTheme.colors.primary
+            ),
+            shape = RoundedCornerShape(dimensionResource(id = DP.dimen._24sdp))
+          )
+          .clip(shape = RoundedCornerShape(dimensionResource(id = DP.dimen._24sdp)))
+          .clickable { onTryAgainClick() }
+          .padding(
+            horizontal = dimensionResource(id = DP.dimen._16sdp),
+            vertical = dimensionResource(id = DP.dimen._8sdp)
+          ),
+        style = TextStyle(
+          fontSize = dimensionResource(id = SP.dimen._17ssp).value.sp,
+          fontWeight = FontWeight.Bold
+        ),
+        color = MaterialTheme.colors.primary
+      )
+    }
+  }
 }
 
 @Composable

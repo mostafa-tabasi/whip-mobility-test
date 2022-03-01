@@ -4,6 +4,8 @@
   <string name="dashboard">Dashboard</string>
   <string name="all">All</string>
   <string name="today">Today</string>
-  <string name="last_week">Last Week</string>
-  <string name="last_month">Last Month</string>
+  <string name="last_seven_days">Last 7 Days</string>
+  <string name="last_thirty_days">Last 30 Days</string>
+  <string name="something_went_wrong">Something went wrong</string>
+  <string name="try_again">Try Again</string>
 </resources>

@@ -2,8 +2,8 @@ package com.whipmobilitytest.android.utils
 
 import com.whipmobilitytest.android.R
 import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_ALL
-import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_LAST_MONTH
-import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_LAST_WEEK
+import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_LAST_30_DAYS
+import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_LAST_7_DAYS
 import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_TODAY
 
 enum class TimeScope {
@@ -16,12 +16,12 @@ enum class TimeScope {
     override val title = R.string.today
   },
   LAST_WEEK {
-    override val apiQueryValue = API_QUERY_LAST_WEEK
-    override val title = R.string.last_week
+    override val apiQueryValue = API_QUERY_LAST_7_DAYS
+    override val title = R.string.last_seven_days
   },
   LAST_MONTH {
-    override val apiQueryValue = API_QUERY_LAST_MONTH
-    override val title = R.string.last_month
+    override val apiQueryValue = API_QUERY_LAST_30_DAYS
+    override val title = R.string.last_thirty_days
   };
 
   abstract val apiQueryValue: String

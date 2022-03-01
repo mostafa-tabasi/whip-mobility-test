@@ -1,6 +1,9 @@
 package com.whipmobilitytest.android.di
 
 import android.content.Context
+import android.content.res.Resources
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.whipmobilitytest.android.WhipMobilityTestApp
 import com.whipmobilitytest.android.data.network.StatisticsService
 import com.whipmobilitytest.android.data.repository.StatisticsRepository
@@ -25,6 +28,14 @@ object AppModule {
   @Provides
   fun provideStatisticsRepository(
     statisticsService: StatisticsService,
-  ): StatisticsRepository = StatisticsRepositoryImpl(statisticsService = statisticsService,)
+  ): StatisticsRepository = StatisticsRepositoryImpl(statisticsService = statisticsService)
+
+  @Singleton
+  @Provides
+  fun provideGson(): Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+
+  @Singleton
+  @Provides
+  fun provideResources(@ApplicationContext context: Context): Resources = context.resources
 
 }
