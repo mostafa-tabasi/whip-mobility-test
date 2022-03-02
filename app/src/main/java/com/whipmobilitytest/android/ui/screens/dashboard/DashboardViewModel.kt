@@ -1,4 +1,4 @@
-package com.whipmobilitytest.android.ui.screens.statistics
+package com.whipmobilitytest.android.ui.screens.dashboard
 
 import android.content.res.Resources
 import androidx.compose.runtime.getValue
