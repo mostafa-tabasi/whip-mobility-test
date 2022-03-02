@@ -60,7 +60,7 @@ class StatisticsViewModel @Inject constructor(
       update(StatisticsUiState::loading, true)
       // fetch dashboard data based on selected time scope
       val result =
-        statisticsRepository.dashboardStatistics(uiState.currentSelectedTimeScope.apiQueryValue)
+        statisticsRepository.dashboardStatistics(uiState.selectedTimeScope.apiQueryValue)
       // hide loading
       update(StatisticsUiState::loading, false)
       // update data in state to show on UI
@@ -104,9 +104,9 @@ class StatisticsViewModel @Inject constructor(
    */
   fun onTimeScopeChange(scope: TimeScope) {
     // if selected scope is equal the previous one, ignore update process
-    if (scope == uiState.currentSelectedTimeScope) return
+    if (scope == uiState.selectedTimeScope) return
     // update current selected scope value with the selected one
-    update(StatisticsUiState::currentSelectedTimeScope, scope)
+    update(StatisticsUiState::selectedTimeScope, scope)
     // clear previous data
     update(StatisticsUiState::dashboardStatisticsData, null)
     // refresh data
@@ -132,6 +132,14 @@ class StatisticsViewModel @Inject constructor(
   }
 
   /**
+   * When user changes pie chart type (index of type list)
+   */
+  fun onPieChartIndexChange(index: Int) {
+    // update current value of selected index with new one
+    update(StatisticsUiState::selectedPieChartIndex, index)
+  }
+
+  /**
    * Update property of the class
    *
    * @param field The required field of class to update its value
@@ -153,5 +161,6 @@ data class StatisticsUiState(
   var loading: Boolean = false,
   var errorMessage: String = "",
   var isScopeMenuExpanded: Boolean = false,
-  var currentSelectedTimeScope: TimeScope = TimeScope.ALL
+  var selectedTimeScope: TimeScope = TimeScope.ALL,
+  var selectedPieChartIndex: Int = 0,
 )

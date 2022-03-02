@@ -1,10 +1,7 @@
 package com.whipmobilitytest.android.ui.screens.dashboard
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -26,6 +23,7 @@ import com.whipmobilitytest.android.R
 import com.whipmobilitytest.android.data.network.response.DashboardStatisticsData
 import com.whipmobilitytest.android.ui.components.HorizontalSpacer
 import com.whipmobilitytest.android.ui.components.VerticalSpacer
+import com.whipmobilitytest.android.ui.screens.dashboard.components.PieCharts
 import com.whipmobilitytest.android.ui.theme.Green600
 import com.whipmobilitytest.android.ui.theme.Red600
 import com.whipmobilitytest.android.utils.TimeScope
@@ -39,7 +37,7 @@ fun DashboardScreen() {
   Column(Modifier.fillMaxSize()) {
     Header(
       isScopeMenuExpanded = viewModel.uiState.isScopeMenuExpanded,
-      currentSelectedScope = viewModel.uiState.currentSelectedTimeScope,
+      currentSelectedScope = viewModel.uiState.selectedTimeScope,
       onScopeMenuToggle = viewModel::onScopeMenuToggle,
       onScopeChange = viewModel::onTimeScopeChange
     )
@@ -68,7 +66,9 @@ fun DashboardScreen() {
     ) {
       Content(
         modifier = Modifier.weight(1f),
-        data = viewModel.uiState.dashboardStatisticsData!!.analytics
+        data = viewModel.uiState.dashboardStatisticsData!!.analytics,
+        selectedPieChartIndex = viewModel.uiState.selectedPieChartIndex,
+        onPieChartIndexChange = viewModel::onPieChartIndexChange,
       )
     }
   }
@@ -198,8 +198,26 @@ fun ErrorMessage(message: String, onTryAgainClick: () -> Unit) {
 }
 
 @Composable
-fun Content(modifier: Modifier, data: DashboardStatisticsData.Analytics) {
-  Column(modifier.padding(vertical = dimensionResource(id = DP.dimen._4sdp))) {
+fun Content(
+  modifier: Modifier,
+  data: DashboardStatisticsData.Analytics,
+  selectedPieChartIndex: Int,
+  onPieChartIndexChange: (Int) -> Unit
+) {
+  Column(
+    modifier
+      .verticalScroll(rememberScrollState())
+      .padding(vertical = dimensionResource(id = DP.dimen._4sdp))
+  ) {
+    // pie charts content if exists
+    if (data.pieCharts != null) {
+      PieCharts(
+        data = data.pieCharts!!,
+        selectedIndex = selectedPieChartIndex,
+        onIndexChange = onPieChartIndexChange
+      )
+      VerticalSpacer(space = DP.dimen._8sdp)
+    }
     // jobs content if exists
     if (data.job != null) Jobs(data.job!!)
   }
@@ -214,7 +232,7 @@ fun Jobs(jobData: DashboardStatisticsData.Analytics.Job) {
       if (!jobData.title.isNullOrEmpty()) Text(
         text = jobData.title!!,
         modifier = Modifier
-          .padding(start = dimensionResource(id = DP.dimen._8sdp)),
+          .padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
         color = MaterialTheme.colors.onSurface,
         fontSize = dimensionResource(id = SP.dimen._14ssp).value.sp,
         fontWeight = FontWeight.ExtraBold
@@ -222,7 +240,7 @@ fun Jobs(jobData: DashboardStatisticsData.Analytics.Job) {
       // job description
       if (!jobData.description.isNullOrEmpty()) Text(
         text = jobData.description!!,
-        modifier = Modifier.padding(start = dimensionResource(id = DP.dimen._8sdp)),
+        modifier = Modifier.padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
         color = MaterialTheme.colors.secondary,
         fontSize = dimensionResource(id = SP.dimen._12ssp).value.sp,
         fontWeight = FontWeight.Light

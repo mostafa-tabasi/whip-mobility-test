@@ -77,4 +77,7 @@ dependencies {
     def dimen_version = '1.0.6'
     implementation "com.intuit.sdp:sdp-android:$dimen_version"
     implementation "com.intuit.ssp:ssp-android:$dimen_version"
+
+    // MPAndroid chart
+    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 }
