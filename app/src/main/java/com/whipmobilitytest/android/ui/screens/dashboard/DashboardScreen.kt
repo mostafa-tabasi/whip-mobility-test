@@ -2,17 +2,27 @@ package com.whipmobilitytest.android.ui.screens.dashboard
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -85,7 +95,7 @@ fun Header(
   onScopeChange: (TimeScope) -> Unit
 ) {
   // header layout
-  Row(
+  Column(
     Modifier
       .fillMaxWidth()
       .clip(
@@ -96,52 +106,101 @@ fun Header(
       )
       .background(MaterialTheme.colors.primary)
       .padding(dimensionResource(id = DP.dimen._10sdp)),
-    verticalAlignment = Alignment.CenterVertically
+    horizontalAlignment = Alignment.CenterHorizontally
   ) {
-    // header title
-    Text(
-      text = stringResource(id = R.string.dashboard),
-      Modifier.weight(1f),
-      style = TextStyle(
-        fontSize = dimensionResource(id = SP.dimen._20ssp).value.sp,
-        fontWeight = FontWeight.Bold
-      ),
-      color = MaterialTheme.colors.onPrimary
-    )
-    // time scopes drop down menu
-    Column {
-      // drop down toggle button
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      // header title
       Text(
-        stringResource(id = currentSelectedScope.title),
-        color = MaterialTheme.colors.onPrimary,
-        fontSize = dimensionResource(id = SP.dimen._13ssp).value.sp,
-        textAlign = TextAlign.Center,
+        text = stringResource(id = R.string.dashboard),
+        Modifier.weight(1f),
+        style = TextStyle(
+          fontSize = dimensionResource(id = SP.dimen._20ssp).value.sp,
+          fontWeight = FontWeight.Bold
+        ),
+        color = MaterialTheme.colors.onPrimary
+      )
+      // time scopes menu toggle button
+      Row(
         modifier = Modifier
           .widthIn(min = dimensionResource(id = DP.dimen._80sdp))
           .border(
             border = BorderStroke(
               width = dimensionResource(id = DP.dimen._1sdp),
-              color = MaterialTheme.colors.onPrimary
+              color = MaterialTheme.colors.onPrimary.copy(alpha = 0.1f)
             ),
             shape = RoundedCornerShape(dimensionResource(id = DP.dimen._20sdp))
           )
           .clip(RoundedCornerShape(dimensionResource(id = DP.dimen._20sdp)))
-          .clickable { onScopeMenuToggle() }
-          .padding(
-            horizontal = dimensionResource(id = DP.dimen._16sdp),
-            vertical = dimensionResource(id = DP.dimen._6sdp)
+          .clickable(
+            onClick = onScopeMenuToggle,
+            indication = (rememberRipple(color = Color.White)),
+            interactionSource = remember { MutableInteractionSource() })
+          .padding(dimensionResource(id = DP.dimen._6sdp))
+          .animateContentSize(),
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.Center
+      ) {
+        // animate icon rotation
+        val rotationAngle by animateFloatAsState(
+          targetValue = if (isScopeMenuExpanded) 180f else 0f,
+          animationSpec = tween(durationMillis = 200, easing = FastOutLinearInEasing)
+        )
+        // menu state icon
+        Icon(
+          painter = painterResource(id = R.drawable.ic_arrow_down),
+          modifier = Modifier.rotate(rotationAngle),
+          contentDescription = null,
+          tint = MaterialTheme.colors.onPrimary.copy(alpha = 0.7f)
+        )
+        // selected scope title
+        Text(
+          stringResource(id = currentSelectedScope.title),
+          color = MaterialTheme.colors.onPrimary.copy(alpha = 0.7f),
+          fontSize = dimensionResource(id = SP.dimen._13ssp).value.sp,
+          textAlign = TextAlign.Center,
+          modifier = Modifier.padding(horizontal = dimensionResource(id = DP.dimen._6sdp))
+        )
+      }
+    }
+    // time scopes options
+    AnimatedVisibility(visible = isScopeMenuExpanded) {
+      Row(
+        Modifier
+          .fillMaxWidth()
+          .padding(top = dimensionResource(id = DP.dimen._4sdp))
+          .horizontalScroll(rememberScrollState()),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        val timeScopes = TimeScope.values()
+        timeScopes.forEachIndexed { index, timeScope ->
+          // scope title
+          Text(
+            text = stringResource(id = timeScope.title),
+            modifier = Modifier
+              .widthIn(min = dimensionResource(id = DP.dimen._50sdp))
+              .clip(RoundedCornerShape(dimensionResource(id = DP.dimen._20sdp)))
+              .clickable(
+                onClick = { onScopeChange(timeScope) },
+                indication = (rememberRipple(color = Color.White)),
+                interactionSource = remember { MutableInteractionSource() })
+              .padding(
+                vertical = dimensionResource(id = DP.dimen._8sdp),
+                horizontal = dimensionResource(id = DP.dimen._12sdp)
+              ),
+            textAlign = TextAlign.Center,
+            fontSize = dimensionResource(id = SP.dimen._13ssp).value.sp,
+            fontWeight = FontWeight.Light,
+            color = MaterialTheme.colors.onPrimary
           )
-          .animateContentSize())
-      VerticalSpacer(space = DP.dimen._2sdp)
-      // drop down menu items
-      DropdownMenu(
-        expanded = isScopeMenuExpanded,
-        onDismissRequest = { onScopeMenuToggle() }) {
-        TimeScope.values().forEach {
-          DropdownMenuItem(onClick = {
-            onScopeChange(it)
-            onScopeMenuToggle()
-          }) { Text(text = stringResource(id = it.title)) }
+          // divider between scope options
+          // doesn't need after last item
+          if (index < timeScopes.size - 1) Divider(
+            Modifier
+              .padding(horizontal = dimensionResource(id = DP.dimen._6sdp))
+              .height(dimensionResource(id = DP.dimen._12sdp))
+              .width(dimensionResource(id = DP.dimen._1sdp))
+              .background(color = MaterialTheme.colors.onPrimary.copy(alpha = 0.3f))
+          )
         }
       }
     }

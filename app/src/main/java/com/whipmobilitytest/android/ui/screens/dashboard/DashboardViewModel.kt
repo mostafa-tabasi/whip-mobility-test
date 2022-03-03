@@ -106,6 +106,9 @@ class StatisticsViewModel @Inject constructor(
   fun onTimeScopeChange(scope: TimeScope) {
     // if selected scope is equal the previous one, ignore update process
     if (scope == uiState.selectedTimeScope) return
+
+    // close menu items
+    onScopeMenuToggle()
     // update current selected scope value with the selected one
     update(StatisticsUiState::selectedTimeScope, scope)
     // clear previous data

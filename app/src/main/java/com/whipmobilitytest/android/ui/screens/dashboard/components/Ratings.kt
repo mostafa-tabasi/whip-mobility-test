@@ -36,7 +36,7 @@ fun Ratings(
   onDetailsToggle: () -> Unit,
 ) {
   Column(Modifier.fillMaxWidth()) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.Bottom) {
       // section header
       SectionHeader(Modifier.weight(1f), title = headerTitle, description = headerDescription)
       // average rating

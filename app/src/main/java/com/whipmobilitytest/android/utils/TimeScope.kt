@@ -7,6 +7,10 @@ import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_LAST_7_DAYS
 import com.whipmobilitytest.android.utils.AppConstants.API_QUERY_TODAY
 
 enum class TimeScope {
+  ALL {
+    override val apiQueryValue = API_QUERY_ALL
+    override val title = R.string.all
+  },
   TODAY {
     override val apiQueryValue = API_QUERY_TODAY
     override val title = R.string.today
@@ -18,10 +22,6 @@ enum class TimeScope {
   LAST_MONTH {
     override val apiQueryValue = API_QUERY_LAST_30_DAYS
     override val title = R.string.last_thirty_days
-  },
-  ALL {
-    override val apiQueryValue = API_QUERY_ALL
-    override val title = R.string.all
   };
 
   abstract val apiQueryValue: String
