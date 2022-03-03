@@ -1,9 +1,7 @@
 package com.whipmobilitytest.android.ui.screens.dashboard.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,107 +25,87 @@ import com.whipmobilitytest.android.data.network.response.DashboardStatisticsDat
 import com.whipmobilitytest.android.ui.components.HorizontalSpacer
 import com.whipmobilitytest.android.ui.theme.Green600
 import com.whipmobilitytest.android.ui.theme.Red600
-
+import com.intuit.ssp.R as SP
 
 @Composable
 fun JobsAndServices(
-  title: String?,
-  description: String?,
+  headerTitle: String?,
+  headerDescription: String?,
   data: List<DashboardStatisticsData.Analytics.JobAndServiceItem>
 ) {
-  Column(Modifier.fillMaxWidth()) {
-    // section title
-    if (!title.isNullOrEmpty()) Text(
-      text = title,
-      modifier = Modifier
-        .padding(horizontal = dimensionResource(id = R.dimen._8sdp)),
-      color = MaterialTheme.colors.onSurface,
-      fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._14ssp).value.sp,
-      fontWeight = FontWeight.ExtraBold
-    )
-    // section description
-    if (!description.isNullOrEmpty()) Text(
-      text = description,
-      modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen._8sdp)),
-      color = MaterialTheme.colors.secondary,
-      fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._12ssp).value.sp,
-      fontWeight = FontWeight.Light
-    )
-  }
+  // section header
+  SectionHeader(title = headerTitle, description = headerDescription)
   // section items
-  AnimatedVisibility(
-    enter = expandVertically(),
-    exit = shrinkVertically(),
-    visible = true
-  ) {
-    LazyRow(Modifier.fillMaxWidth()) {
-      items(data) {
-        Column(
-          Modifier
-            .padding(dimensionResource(id = R.dimen._8sdp))
-            .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen._8sdp)))
-            .background(
-              color = when {
-                it.growth ?: 0 > 0 -> Green600.copy(alpha = 0.1f)
-                it.growth ?: 0 < 0 -> Red600.copy(alpha = 0.1f)
-                else -> MaterialTheme.colors.secondary.copy(alpha = 0.1f)
-              }
-            )
-            .padding(
-              start = dimensionResource(id = R.dimen._16sdp),
-              end = dimensionResource(id = R.dimen._16sdp),
-              bottom = dimensionResource(id = R.dimen._16sdp)
-            )
-        ) {
-          Row(verticalAlignment = Alignment.Bottom) {
-            // item value
-            Text(
-              text = "${it.avg ?: it.total ?: ""}",
-              modifier = Modifier.alignByBaseline(),
-              color = MaterialTheme.colors.onSurface,
-              style = MaterialTheme.typography.h2
-            )
-            if (it.growth != null) {
-              HorizontalSpacer(space = R.dimen._4sdp)
-              Row(modifier = Modifier.alignByBaseline()) {
-                if (it.growth != 0) {
-                  // job item growth icon
-                  Icon(
-                    painter = painterResource(id = if (it.growth!! > 0) com.whipmobilitytest.android.R.drawable.ic_growth_up else com.whipmobilitytest.android.R.drawable.ic_growth_down),
-                    contentDescription = null,
-                    tint = if (it.growth!! > 0) Green600 else Red600
-                  )
-                  HorizontalSpacer(space = R.dimen._2sdp)
-                }
-                // item growth value
-                Text(
-                  text = it.growth.toString(),
-                  color = when {
-                    it.growth!! > 0 -> Green600
-                    it.growth!! < 0 -> Red600
-                    else -> MaterialTheme.colors.onSurface
-                  },
-                  fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._13ssp).value.sp,
-                  fontWeight = FontWeight.Bold
+  LazyRow(Modifier.fillMaxWidth()) {
+    items(data) {
+      Column(
+        Modifier
+          .padding(dimensionResource(id = R.dimen._8sdp))
+          .border(
+            border = BorderStroke(
+              width = dimensionResource(id = R.dimen._1sdp),
+              color = MaterialTheme.colors.secondary.copy(alpha = 0.3f)
+            ),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen._8sdp))
+          )
+          .clip(RoundedCornerShape(dimensionResource(id = R.dimen._8sdp)))
+          .padding(
+            horizontal = dimensionResource(id = R.dimen._12sdp),
+            vertical = dimensionResource(id = R.dimen._8sdp)
+          )
+      ) {
+        Row(verticalAlignment = Alignment.Bottom) {
+          // item value
+          Text(
+            text = "${it.avg ?: it.total ?: ""}",
+            modifier = Modifier.alignByBaseline(),
+            color = MaterialTheme.colors.onBackground,
+            fontSize = dimensionResource(id = SP.dimen._25ssp).value.sp,
+            fontWeight = FontWeight.ExtraBold
+          )
+          if (it.growth != null) {
+            HorizontalSpacer(space = R.dimen._4sdp)
+            Row(modifier = Modifier.alignByBaseline()) {
+              if (it.growth != 0) {
+                // job item growth icon
+                Icon(
+                  painter = painterResource(
+                    id = if (it.growth!! > 0) com.whipmobilitytest.android.R.drawable.ic_growth_up
+                    else com.whipmobilitytest.android.R.drawable.ic_growth_down
+                  ),
+                  contentDescription = null,
+                  tint = if (it.growth!! > 0) Green600 else Red600
                 )
+                HorizontalSpacer(space = R.dimen._2sdp)
               }
+              // item growth value
+              Text(
+                text = it.growth.toString(),
+                color = when {
+                  it.growth!! > 0 -> Green600
+                  it.growth!! < 0 -> Red600
+                  else -> MaterialTheme.colors.onBackground
+                },
+                fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._13ssp).value.sp,
+                fontWeight = FontWeight.Bold
+              )
             }
           }
-          // item title
-          Text(
-            text = it.title ?: "",
-            color = MaterialTheme.colors.onSurface,
-            fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._13ssp).value.sp,
-            fontWeight = FontWeight.Bold
-          )
-          // item description
-          Text(
-            text = it.description ?: "",
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.5f),
-            fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._12ssp).value.sp,
-            fontWeight = FontWeight.Light
-          )
         }
+        // item title
+        Text(
+          text = it.title ?: "",
+          color = MaterialTheme.colors.onBackground,
+          fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._12ssp).value.sp,
+          fontWeight = FontWeight.Bold
+        )
+        // item description
+        Text(
+          text = it.description ?: "",
+          color = MaterialTheme.colors.onBackground.copy(alpha = 0.7f),
+          fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._10ssp).value.sp,
+          fontWeight = FontWeight.Light
+        )
       }
     }
   }

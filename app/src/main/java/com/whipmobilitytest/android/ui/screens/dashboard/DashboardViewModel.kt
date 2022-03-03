@@ -80,6 +80,7 @@ class StatisticsViewModel @Inject constructor(
         update(StatisticsUiState::errorMessage, exception.message!!)
       }
       is HttpException -> {
+        // extract error message from error response
         val errorBodyString = exception.response()?.errorBody()?.string()
         if (errorBodyString.isNullOrEmpty()) {
           update(StatisticsUiState::errorMessage, defaultErrorMessage)
@@ -167,6 +168,6 @@ data class StatisticsUiState(
   var errorMessage: String = "",
   var isScopeMenuExpanded: Boolean = false,
   var isRatingsExpanded: Boolean = true,
-  var selectedTimeScope: TimeScope = TimeScope.ALL,
+  var selectedTimeScope: TimeScope = TimeScope.LAST_WEEK,
   var selectedPieChartIndex: Int = 0,
 )

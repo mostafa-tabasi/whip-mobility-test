@@ -7,17 +7,17 @@ import android.widget.LinearLayout
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -37,33 +37,15 @@ import com.whipmobilitytest.android.ui.theme.BlueGrey300
 import com.whipmobilitytest.android.utils.ChartAxisDateValueFormatter
 import com.whipmobilitytest.android.utils.CommonUtils
 import com.intuit.sdp.R as DP
-import com.intuit.ssp.R as SP
 
 @Composable
 fun LineCharts(
-  title: String?,
-  description: String?,
+  headerTitle: String?,
+  headerDescription: String?,
   data: List<DashboardStatisticsData.Analytics.LineChartItem>
 ) {
-  Column(Modifier.fillMaxWidth()) {
-    // section title
-    if (!title.isNullOrEmpty()) Text(
-      text = title,
-      modifier = Modifier
-        .padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
-      color = MaterialTheme.colors.onSurface,
-      fontSize = dimensionResource(id = SP.dimen._14ssp).value.sp,
-      fontWeight = FontWeight.ExtraBold
-    )
-    // section description
-    if (!description.isNullOrEmpty()) Text(
-      text = description,
-      modifier = Modifier.padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
-      color = MaterialTheme.colors.secondary,
-      fontSize = dimensionResource(id = SP.dimen._12ssp).value.sp,
-      fontWeight = FontWeight.Light
-    )
-  }
+  // section header
+  SectionHeader(title = headerTitle, description = headerDescription)
   // chart layout
   Box(
     contentAlignment = Alignment.Center,

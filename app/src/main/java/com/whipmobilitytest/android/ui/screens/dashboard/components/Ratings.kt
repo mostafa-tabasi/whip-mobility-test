@@ -21,15 +21,15 @@ import androidx.compose.ui.unit.sp
 import com.whipmobilitytest.android.R
 import com.whipmobilitytest.android.data.network.response.DashboardStatisticsData
 import com.whipmobilitytest.android.ui.components.HorizontalSpacer
-import com.whipmobilitytest.android.utils.separate
+import com.whipmobilitytest.android.utils.separated
 import com.intuit.sdp.R as DP
 import com.intuit.ssp.R as SP
 
 
 @Composable
 fun Ratings(
-  title: String?,
-  description: String?,
+  headerTitle: String?,
+  headerDescription: String?,
   average: Float?,
   data: DashboardStatisticsData.Analytics.Rating.Items?,
   isDetailsVisible: Boolean,
@@ -37,25 +37,8 @@ fun Ratings(
 ) {
   Column(Modifier.fillMaxWidth()) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-      Column(Modifier.weight(1f)) {
-        // section title
-        if (!title.isNullOrEmpty()) Text(
-          text = title,
-          modifier = Modifier
-            .padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
-          color = MaterialTheme.colors.onSurface,
-          fontSize = dimensionResource(id = SP.dimen._14ssp).value.sp,
-          fontWeight = FontWeight.ExtraBold
-        )
-        // section description
-        if (!description.isNullOrEmpty()) Text(
-          text = description,
-          modifier = Modifier.padding(horizontal = dimensionResource(id = DP.dimen._8sdp)),
-          color = MaterialTheme.colors.secondary,
-          fontSize = dimensionResource(id = SP.dimen._12ssp).value.sp,
-          fontWeight = FontWeight.Light
-        )
-      }
+      // section header
+      SectionHeader(Modifier.weight(1f), title = headerTitle, description = headerDescription)
       // average rating
       if (average != null) {
         Column(
@@ -66,9 +49,9 @@ fun Ratings(
                 width = dimensionResource(id = DP.dimen._1sdp),
                 color = MaterialTheme.colors.secondary.copy(alpha = 0.3f)
               ),
-              shape = RoundedCornerShape(dimensionResource(id = DP.dimen._4sdp))
+              shape = RoundedCornerShape(dimensionResource(id = DP.dimen._8sdp))
             )
-            .clip(RoundedCornerShape(dimensionResource(id = DP.dimen._4sdp)))
+            .clip(RoundedCornerShape(dimensionResource(id = DP.dimen._8sdp)))
             .clickable { onDetailsToggle() }
             .padding(dimensionResource(id = DP.dimen._6sdp)),
           horizontalAlignment = Alignment.CenterHorizontally) {
@@ -90,7 +73,7 @@ fun Ratings(
               )
               HorizontalSpacer(space = DP.dimen._1sdp)
               Text(
-                data?.numberOfVotes()!!.separate(),
+                data?.numberOfVotes()!!.separated(),
                 color = MaterialTheme.colors.secondary,
                 fontSize = dimensionResource(id = SP.dimen._10ssp).value.sp,
                 fontWeight = FontWeight.Light

@@ -22,10 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.whipmobilitytest.android.R
 import com.whipmobilitytest.android.data.network.response.DashboardStatisticsData
 import com.whipmobilitytest.android.ui.components.VerticalSpacer
-import com.whipmobilitytest.android.ui.screens.dashboard.components.JobsAndServices
-import com.whipmobilitytest.android.ui.screens.dashboard.components.LineCharts
-import com.whipmobilitytest.android.ui.screens.dashboard.components.PieCharts
-import com.whipmobilitytest.android.ui.screens.dashboard.components.Ratings
+import com.whipmobilitytest.android.ui.screens.dashboard.components.*
 import com.whipmobilitytest.android.utils.TimeScope
 import com.intuit.sdp.R as DP
 import com.intuit.ssp.R as SP
@@ -173,7 +170,7 @@ fun ErrorMessage(message: String, onTryAgainClick: () -> Unit) {
         text = message,
         textAlign = TextAlign.Center,
         fontSize = dimensionResource(id = SP.dimen._17ssp).value.sp,
-        color = MaterialTheme.colors.onSurface
+        color = MaterialTheme.colors.onBackground
       )
       VerticalSpacer(space = DP.dimen._16sdp)
       // try again button
@@ -224,47 +221,47 @@ fun Content(
         selectedIndex = selectedPieChartIndex,
         onIndexChange = onPieChartIndexChange
       )
-      VerticalSpacer(space = DP.dimen._8sdp)
+      SectionDivider()
     }
     // ratings if exists
     if (data.rating != null) {
       Ratings(
-        title = data.rating!!.title,
-        description = data.rating!!.description,
+        headerTitle = data.rating!!.title,
+        headerDescription = data.rating!!.description,
         average = data.rating!!.avg,
         data = data.rating!!.items,
         isDetailsVisible = isRatingDetailsVisible,
         onDetailsToggle = onRatingDetailsToggle
       )
-      VerticalSpacer(space = DP.dimen._8sdp)
+      SectionDivider()
     }
     // jobs content if exists
     if (data.job != null) {
       JobsAndServices(
-        title = data.job!!.title,
-        description = data.job!!.description,
+        headerTitle = data.job!!.title,
+        headerDescription = data.job!!.description,
         data = data.job!!.items
       )
-      VerticalSpacer(space = DP.dimen._8sdp)
+      SectionDivider()
     }
     // services content if exists
     if (data.service != null) {
       JobsAndServices(
-        title = data.service!!.title,
-        description = data.service!!.description,
+        headerTitle = data.service!!.title,
+        headerDescription = data.service!!.description,
         data = data.service!!.items
       )
-      VerticalSpacer(space = DP.dimen._8sdp)
+      SectionDivider()
     }
     // pie charts content if exists
     if (!data.lineCharts?.get(0).isNullOrEmpty()) {
       data.lineCharts!![0].forEach {
         LineCharts(
-          title = it.title,
-          description = it.description,
+          headerTitle = it.title,
+          headerDescription = it.description,
           data = it.items,
         )
-        VerticalSpacer(space = DP.dimen._8sdp)
+        SectionDivider()
       }
     }
   }
