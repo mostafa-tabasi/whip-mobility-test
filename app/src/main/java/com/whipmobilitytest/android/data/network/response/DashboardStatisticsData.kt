@@ -14,17 +14,9 @@ data class DashboardStatisticsData(
   ) {
     data class Job(
       @SerializedName("description") var description: String?,
-      @SerializedName("items") var items: List<Item>,
+      @SerializedName("items") var items: List<JobAndServiceItem>,
       @SerializedName("title") var title: String?
-    ) {
-      data class Item(
-        @SerializedName("description") var description: String?,
-        @SerializedName("growth") var growth: Int?,
-        @SerializedName("title") var title: String?,
-        @SerializedName("total") var total: Int?,
-        @SerializedName("avg") var avg: String?,
-      )
-    }
+    )
 
     data class PieChartItem(
       @SerializedName("key") var key: String?,
@@ -48,17 +40,9 @@ data class DashboardStatisticsData(
 
     data class Service(
       @SerializedName("description") var description: String?,
-      @SerializedName("items") var items: List<Item>,
+      @SerializedName("items") var items: List<JobAndServiceItem>,
       @SerializedName("title") var title: String?,
-    ) {
-      data class Item(
-        @SerializedName("description") var description: String?,
-        @SerializedName("growth") var growth: Int?,
-        @SerializedName("title") var title: String?,
-        @SerializedName("total") var total: Int?,
-        @SerializedName("avg") var avg: String?,
-      )
-    }
+    )
 
     data class LineChartItem(
       @SerializedName("key") var key: String?,
@@ -75,6 +59,14 @@ data class DashboardStatisticsData(
       @SerializedName("description") var description: String?,
       @SerializedName("items") var items: T,
       @SerializedName("title") var title: String?
+    )
+
+    data class JobAndServiceItem(
+      @SerializedName("description") var description: String?,
+      @SerializedName("growth") var growth: Int?,
+      @SerializedName("title") var title: String?,
+      @SerializedName("total") var total: Int?,
+      @SerializedName("avg") var avg: String?,
     )
   }
 }
