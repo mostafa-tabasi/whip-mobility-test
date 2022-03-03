@@ -21,4 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 # keep model classes
--keep class com.whipmobilitytest.android.data.network.response** { *; }
+-keep class com.whipmobilitytest.android.data.network.response.** { *; }
