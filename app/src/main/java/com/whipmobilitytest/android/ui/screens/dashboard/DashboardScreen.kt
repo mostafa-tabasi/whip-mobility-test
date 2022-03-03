@@ -23,6 +23,7 @@ import com.whipmobilitytest.android.R
 import com.whipmobilitytest.android.data.network.response.DashboardStatisticsData
 import com.whipmobilitytest.android.ui.components.VerticalSpacer
 import com.whipmobilitytest.android.ui.screens.dashboard.components.JobsAndServices
+import com.whipmobilitytest.android.ui.screens.dashboard.components.LineCharts
 import com.whipmobilitytest.android.ui.screens.dashboard.components.PieCharts
 import com.whipmobilitytest.android.ui.screens.dashboard.components.Ratings
 import com.whipmobilitytest.android.utils.TimeScope
@@ -254,6 +255,17 @@ fun Content(
         data = data.service!!.items
       )
       VerticalSpacer(space = DP.dimen._8sdp)
+    }
+    // pie charts content if exists
+    if (!data.lineCharts?.get(0).isNullOrEmpty()) {
+      data.lineCharts!![0].forEach {
+        LineCharts(
+          title = it.title,
+          description = it.description,
+          data = it.items,
+        )
+        VerticalSpacer(space = DP.dimen._8sdp)
+      }
     }
   }
 }
