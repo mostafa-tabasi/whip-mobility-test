@@ -117,7 +117,6 @@ class StatisticsViewModel @Inject constructor(
    * When visibility state of the scope drop down menu is changed
    */
   fun onScopeMenuToggle() {
-    // update current value of scope menu expanded with reverse one
     update(StatisticsUiState::isScopeMenuExpanded, !uiState.isScopeMenuExpanded)
   }
 
@@ -135,8 +134,14 @@ class StatisticsViewModel @Inject constructor(
    * When user changes pie chart type (index of type list)
    */
   fun onPieChartIndexChange(index: Int) {
-    // update current value of selected index with new one
     update(StatisticsUiState::selectedPieChartIndex, index)
+  }
+
+  /**
+   * When user toggle visibility state of rating details
+   */
+  fun onRatingDetailsToggle() {
+    update(StatisticsUiState::isRatingsExpanded, !uiState.isRatingsExpanded)
   }
 
   /**
@@ -161,6 +166,7 @@ data class StatisticsUiState(
   var loading: Boolean = false,
   var errorMessage: String = "",
   var isScopeMenuExpanded: Boolean = false,
+  var isRatingsExpanded: Boolean = true,
   var selectedTimeScope: TimeScope = TimeScope.ALL,
   var selectedPieChartIndex: Int = 0,
 )

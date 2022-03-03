@@ -24,6 +24,7 @@ import com.whipmobilitytest.android.data.network.response.DashboardStatisticsDat
 import com.whipmobilitytest.android.ui.components.VerticalSpacer
 import com.whipmobilitytest.android.ui.screens.dashboard.components.JobsAndServices
 import com.whipmobilitytest.android.ui.screens.dashboard.components.PieCharts
+import com.whipmobilitytest.android.ui.screens.dashboard.components.Ratings
 import com.whipmobilitytest.android.utils.TimeScope
 import com.intuit.sdp.R as DP
 import com.intuit.ssp.R as SP
@@ -71,6 +72,8 @@ fun DashboardScreen(innerPaddingModifier: PaddingValues) {
         data = viewModel.uiState.dashboardStatisticsData!!.analytics,
         selectedPieChartIndex = viewModel.uiState.selectedPieChartIndex,
         onPieChartIndexChange = viewModel::onPieChartIndexChange,
+        isRatingDetailsVisible = viewModel.uiState.isRatingsExpanded,
+        onRatingDetailsToggle = viewModel::onRatingDetailsToggle,
       )
     }
   }
@@ -204,7 +207,9 @@ fun Content(
   modifier: Modifier,
   data: DashboardStatisticsData.Analytics,
   selectedPieChartIndex: Int,
-  onPieChartIndexChange: (Int) -> Unit
+  onPieChartIndexChange: (Int) -> Unit,
+  isRatingDetailsVisible: Boolean,
+  onRatingDetailsToggle: () -> Unit,
 ) {
   Column(
     modifier
@@ -220,6 +225,18 @@ fun Content(
       )
       VerticalSpacer(space = DP.dimen._8sdp)
     }
+    // ratings if exists
+    if (data.rating != null) {
+      Ratings(
+        title = data.rating!!.title,
+        description = data.rating!!.description,
+        average = data.rating!!.avg,
+        data = data.rating!!.items,
+        isDetailsVisible = isRatingDetailsVisible,
+        onDetailsToggle = onRatingDetailsToggle
+      )
+      VerticalSpacer(space = DP.dimen._8sdp)
+    }
     // jobs content if exists
     if (data.job != null) {
       JobsAndServices(
@@ -229,7 +246,7 @@ fun Content(
       )
       VerticalSpacer(space = DP.dimen._8sdp)
     }
-    // Services content if exists
+    // services content if exists
     if (data.service != null) {
       JobsAndServices(
         title = data.service!!.title,

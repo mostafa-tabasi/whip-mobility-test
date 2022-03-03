@@ -35,7 +35,20 @@ data class DashboardStatisticsData(
         @SerializedName("3") var rate3: Int?,
         @SerializedName("4") var rate4: Int?,
         @SerializedName("5") var rate5: Int?,
-      )
+      ) {
+        fun toPairList() = arrayListOf<Pair<String, Int?>>().apply {
+          add(Pair("1", rate1))
+          add(Pair("2", rate2))
+          add(Pair("3", rate3))
+          add(Pair("4", rate4))
+          add(Pair("5", rate5))
+        }
+
+        /**
+         * calculate number of all votes
+         */
+        fun numberOfVotes() = toPairList().sumOf { it.second ?: 0 }.toLong()
+      }
     }
 
     data class Service(
