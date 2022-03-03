@@ -61,10 +61,10 @@ class StatisticsViewModel @Inject constructor(
       // fetch dashboard data based on selected time scope
       val result =
         statisticsRepository.dashboardStatistics(uiState.selectedTimeScope.apiQueryValue)
-      // hide loading
-      update(StatisticsUiState::loading, false)
       // update data in state to show on UI
       update(StatisticsUiState::dashboardStatisticsData, result.response.data)
+      // hide loading
+      update(StatisticsUiState::loading, false)
     }
   }
 
