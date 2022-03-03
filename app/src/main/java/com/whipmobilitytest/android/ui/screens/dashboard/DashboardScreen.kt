@@ -215,25 +215,15 @@ fun Content(
       .padding(vertical = dimensionResource(id = DP.dimen._4sdp))
   ) {
     // pie charts content if exists
-    if (data.pieCharts != null) {
-      PieCharts(
-        data = data.pieCharts!!,
-        selectedIndex = selectedPieChartIndex,
-        onIndexChange = onPieChartIndexChange
-      )
-      SectionDivider()
-    }
-    // ratings if exists
-    if (data.rating != null) {
-      Ratings(
-        headerTitle = data.rating!!.title,
-        headerDescription = data.rating!!.description,
-        average = data.rating!!.avg,
-        data = data.rating!!.items,
-        isDetailsVisible = isRatingDetailsVisible,
-        onDetailsToggle = onRatingDetailsToggle
-      )
-      SectionDivider()
+    if (!data.lineCharts?.get(0).isNullOrEmpty()) {
+      data.lineCharts!![0].forEach {
+        LineCharts(
+          headerTitle = it.title,
+          headerDescription = it.description,
+          data = it.items,
+        )
+        SectionDivider()
+      }
     }
     // jobs content if exists
     if (data.job != null) {
@@ -254,15 +244,25 @@ fun Content(
       SectionDivider()
     }
     // pie charts content if exists
-    if (!data.lineCharts?.get(0).isNullOrEmpty()) {
-      data.lineCharts!![0].forEach {
-        LineCharts(
-          headerTitle = it.title,
-          headerDescription = it.description,
-          data = it.items,
-        )
-        SectionDivider()
-      }
+    if (data.pieCharts != null) {
+      PieCharts(
+        data = data.pieCharts!!,
+        selectedIndex = selectedPieChartIndex,
+        onIndexChange = onPieChartIndexChange
+      )
+      SectionDivider()
+    }
+    // ratings if exists
+    if (data.rating != null) {
+      Ratings(
+        headerTitle = data.rating!!.title,
+        headerDescription = data.rating!!.description,
+        average = data.rating!!.avg,
+        data = data.rating!!.items,
+        isDetailsVisible = isRatingDetailsVisible,
+        onDetailsToggle = onRatingDetailsToggle
+      )
+      SectionDivider()
     }
   }
 }
