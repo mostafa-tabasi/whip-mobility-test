@@ -6,8 +6,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.whipmobilitytest.android.WhipMobilityTestApp
 import com.whipmobilitytest.android.data.network.StatisticsService
+import com.whipmobilitytest.android.data.repository.OfflineStatisticsRepositoryImpl
 import com.whipmobilitytest.android.data.repository.StatisticsRepository
-import com.whipmobilitytest.android.data.repository.StatisticsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ object AppModule {
   @Provides
   fun provideStatisticsRepository(
     statisticsService: StatisticsService,
-  ): StatisticsRepository = StatisticsRepositoryImpl(statisticsService = statisticsService)
+  ): StatisticsRepository = OfflineStatisticsRepositoryImpl()
 
   @Singleton
   @Provides
